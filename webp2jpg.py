@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 #
-# JPG/JPEG Exif remover.
+# webp2jpg
 #
 import os
 import random
@@ -8,7 +8,7 @@ import string
 import argparse
 import pathlib
 import time
-from exif import Image
+from PIL import Image
 
 def generate_random_string(length):
     ld = string.ascii_letters+string.digits
@@ -51,16 +51,16 @@ if args.input.is_dir():
     
     for obj in os.scandir(args.input):
         if obj.is_file():
-           if obj.name.lower().endswith(('.jpg','.jpeg')):
+           if obj.name.lower().endswith('.webp'):
                inputs.append(args.input.joinpath(obj.name))
 else:
     inputs.append(args.input.absolute())
-
 
 start_time = time.time()
 
 for idx, input in enumerate(inputs):
     output = ''
+
     if args.output.is_file() or args.output.suffix.startswith('.'):
         output = args.output.absolute()
     else:
@@ -68,17 +68,16 @@ for idx, input in enumerate(inputs):
 
         if args.random_name:
             random_name = generate_random_string(args.random_name_length)
-            output_name = f'{random_name}{input.suffix}'
+            output_name = f'{random_name}.jpg'
 
         else:
-            output_name = f'{input.stem}_noexif{input.suffix}'
+            output_name = f'{input.stem}.jpg'
 
         output = args.output.absolute().joinpath(output_name)
 
     print(f'[{idx+1}] - {input} -> {output}')
-    image = get_image(input)
-    image.delete_all()
-    save_image(output, image)
+    image = Image.open(input).convert('RGB')
+    image.save(output, 'jpeg')
 
 seconds = time.time() - start_time
 print('Done in', time.strftime('%H:%M:%S',time.gmtime(seconds)))
