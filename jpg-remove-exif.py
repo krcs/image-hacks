@@ -3,16 +3,11 @@
 # JPG/JPEG Exif remover.
 #
 import os
-import random
-import string
 import argparse
 import pathlib
 import time
 from exif import Image
-
-def generate_random_string(length):
-    ld = string.ascii_letters+string.digits
-    return ''.join([random.choice(ld) for n in range(length)])
+from strhelper import generate_random_string
 
 def get_image(filename):
     with open(filename, 'rb') as image_file:

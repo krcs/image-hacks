@@ -9,19 +9,7 @@ import argparse
 import pathlib
 import time
 from PIL import Image
-
-def generate_random_string(length):
-    ld = string.ascii_letters+string.digits
-    return ''.join([random.choice(ld) for n in range(length)])
-
-def get_image(filename):
-    with open(filename, 'rb') as image_file:
-        result = Image(image_file)
-    return result
-
-def save_image(filename, image):
-    with open(filename, 'wb') as image_file:
-        image_file.write(image.get_file())
+from strhelper import generate_random_string
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-i', '--input', required=True, type=pathlib.Path, help="Input file or directory.")
@@ -80,4 +68,5 @@ for idx, input in enumerate(inputs):
     image.save(output, 'jpeg')
 
 seconds = time.time() - start_time
+
 print('Done in', time.strftime('%H:%M:%S',time.gmtime(seconds)))
