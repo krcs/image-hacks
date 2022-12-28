@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 #
 # JPG/JPEG Get Exif.
 #
@@ -20,16 +21,15 @@ image = Image.open(args.file)
 exif = image.getexif()
 
 result = {
-    'Filename': str(args.file)
+    'Filename': str(args.file.resolve().absolute())
 }
-
 
 for id in exif:
     tag = TAGS.get(id, id)
     value = exif.get(id)
 
     if isinstance(value, bytes):
-        value = value.decode()
+        value = value.decode(errors='ignore')
 
     if type(value) == int:
         value = int(value)
@@ -39,4 +39,3 @@ for id in exif:
 
 json_obj = json.dumps(result, indent=4)
 print(json_obj)
-
