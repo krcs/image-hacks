@@ -27,9 +27,7 @@ parser.add_argument('-rl', '--random-name-length', help="Random string length, d
 args = parser.parse_args()
 
 if not args.input.exists():
-    print()
     print('Error! Input not exist.')
-    print()
     exit(1)
 
 if not args.output:
@@ -39,9 +37,7 @@ inputs = []
 
 if args.input.is_dir():
     if args.output.is_file() or args.output.suffix.startswith('.'):
-        print()
         print('Error! Output cannot be file when input is a directory.')
-        print()
         exit(1)
     
     for obj in os.scandir(args.input):
